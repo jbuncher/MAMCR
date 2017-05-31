@@ -45,3 +45,12 @@ E(RR)$weight
 
 # restore the original weight
 E(RR)[weight == 7]$weight <- originalweight
+
+# list vertices
+V(RR)
+
+# list vertices along with attributes
+V(RR)[[]]
+
+# list vertex names
+V(RR)$name
