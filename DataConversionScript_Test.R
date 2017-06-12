@@ -12,7 +12,7 @@ NofPRs = 4
 choices = LETTERS[1:NofPRs]
 
 # Create empty Matrix
-ActualMatrix <- matrix(data = NA, nrow  = NofSs, ncol = NofQs)
+ActualMatrix <- matrix(data = NA, nrow  = NofSs, ncol = NofQs*4)
 
 # Convert our matrix to a data frame
 TestMatrix <- data.frame(TestMatrix)
@@ -23,3 +23,4 @@ for (q in 1:NofQs) ColumnNames <- c(ColumnNames,paste0(rep(q,NofPRs),choices))
 
 # Give the columns in our data frame actual names
 TestMatrix <- setNames(TestMatrix, ColumnNames)
+
