@@ -34,5 +34,6 @@ for (q in 1:NofQs){
   }
 }
 
-
+# Write out the converted data, so we don't have to do it again!
+write.csv(TestMatrix,file="TestMatrixOutput.csv")
 
