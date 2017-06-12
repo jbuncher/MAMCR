@@ -24,3 +24,12 @@ for (q in 1:NofQs) ColumnNames <- c(ColumnNames,paste0(rep(q,NofPRs),choices))
 # Give the columns in our data frame actual names
 TestMatrix <- setNames(TestMatrix, ColumnNames)
 
+for (q in 1:NofQs){
+  for (choice in choices){ 
+    # Select the column we need
+    selcol <- paste0(q,choice)
+    # Put a "1" in the cell for choices that match, 0 for those that don't
+    TestMatrix[selcol][TestResponse[q]==choice] <- 1
+    TestMatrix[selcol][TestResponse[q]!=choice] <- 0
+    }
+  }
