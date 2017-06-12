@@ -24,6 +24,11 @@ for (q in 1:NofQs) ColumnNames <- c(ColumnNames,paste0(rep(q,NofPRs),choices))
 # Give the columns in our data frame actual names
 TestMatrix <- setNames(TestMatrix, ColumnNames)
 
+# For each question (for all students), loop through each of the possible choices,
+# putting a 1 in the corresponding "QuestionChoice" column in TestMatrix if the 
+# student chose "choice", and a 0 if they did not.  Every element of the "NA" matrix
+# should either be 1 or 0 after this
+
 for (q in 1:NofQs){
   for (choice in choices){ 
     # Select the column we need
