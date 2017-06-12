@@ -1,4 +1,4 @@
-# Script to clean the "test" data file, converting choices (a, b, c, d) to "True/False"
+# Script to clean the "test" data file, converting choices (A, B, C, D) to "1/0" (True/False)
 
 # Import the File of Responses
 TestResponse <- read.csv("/media/jbuncher/Research/PER/REU/2017/R/MAMCR/TestResponse.csv",row.names=1)
@@ -34,8 +34,8 @@ for (q in 1:NofQs){
     # Select the column we need
     selcol <- paste0(q,choice)
     # Put a "1" in the cell for choices that match, 0 for those that don't
-    TestMatrix[selcol][TestResponse[q]==choice] <- 1
-    TestMatrix[selcol][TestResponse[q]!=choice] <- 0
+    TestMatrix[selcol][TestResponse[q] == choice] <- 1
+    TestMatrix[selcol][TestResponse[q] != choice] <- 0
   }
 }
 
