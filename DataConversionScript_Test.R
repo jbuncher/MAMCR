@@ -31,5 +31,8 @@ for (q in 1:NofQs){
     # Put a "1" in the cell for choices that match, 0 for those that don't
     TestMatrix[selcol][TestResponse[q]==choice] <- 1
     TestMatrix[selcol][TestResponse[q]!=choice] <- 0
-    }
   }
+}
+
+
+
