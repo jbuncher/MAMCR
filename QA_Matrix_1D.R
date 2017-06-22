@@ -1,6 +1,6 @@
 #Automating Column Names
 library(readxl)
-X1D_Data_QA_Only_1_ <- read_excel("1D_Data_QA_Only(1).xls")
+X1D_Data_QA_Only_2_ <- read.csv("~/Desktop/REU_2017/1D_Data_QA_Only(2).csv",row.names = 1)
 
 #Number of Questions
 NumberOfQuestions <- 6
@@ -23,9 +23,12 @@ Ques <- rep("Q", times =length(vect2))
 #Putting it all together to create the Column names
 ColumnNames <- paste(Ques, vect2, vect5, let1, sep ="")
 
+#Where the data is coming from (easier for following code to be copied and adapted)
+Data <- X1D_Data_QA_Only_2_
+
 #Creating a QA_Matrix the same size as TestResponse Matrix
-QA_Matrix_1D <- matrix(data = NA,nrow=nrow(X1D_Data_QA_Only_1_),ncol = length(ColumnNames),
-                     byrow = FALSE, dimnames = as.list(c(ColumnNames,ColumnNames)))
+QA_Matrix_1D <- matrix(data = NA,nrow=nrow(Data),ncol = (length(ColumnNames)),
+                     byrow = FALSE, dimnames = NULL)
 
 #Convert Matrix to a data frame so we can manipulate the names of the columns
 QA_Matrix_1D <- data.frame(QA_Matrix_1D)
@@ -36,17 +39,24 @@ QA_Matrix_1D <- setNames(QA_Matrix_1D, ColumnNames)
 #Number of questions doubled (p/s verisons) for iteration i
 QuestionLength <- (NumberOfQuestions*2)
 
+#Adding row names from data set
+row.names(QA_Matrix_1D) <- row.names(Data)
+
+#loop for generating matrix
 let1 <- c("ppp","ppn","pmp","pmn","npp","npn","nmp","nmn")
 for (i in 1:QuestionLength)
-  {for (j in 1:nrow(X1D_Data_QA_Only_1_))
+  {for (j in 1:nrow(Data))
   {for (k in 1:length(let1))
-  {for (l in 1) if (X1D_Data_QA_Only_1_[j,i]==let1[k]) QA_Matrix_1D[j,(i-1)*8+k] <- 1 
+  {for (l in 1) if (Data[j,i]==let1[k]) QA_Matrix_1D[j,(i-1)*8+k] <- 1 
         else QA_Matrix_1D[j,(i-1)*8+k] <- 0 }}}
 
 library(igraph)
-QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D, add.names = NULL)
+QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D)
 QA_1D_Network.bp <- bipartite.projection(QA_1D_Network)
-V(QA_1D_Network.bp$proj2)$label <- ColumnNames
+
+#Following line of code no longer needed as long as the original matrix has both row 
+    # and column names
+#V(QA_1D_Network.bp$proj2)$label <- ColumnNames
 
 E(QA_1D_Network.bp$proj2)$width <- E(QA_1D_Network.bp$proj2)$weight
 plot(QA_1D_Network.bp$proj2)
@@ -54,5 +64,13 @@ plot(QA_1D_Network.bp$proj2)
 #QR: Question Responses
 QR_1D_Network <- QA_1D_Network.bp$proj2
 
-degree(QR_1D_Network, modes = "all")
-igraph::degree(QR_1D_Network, modes = "all")
+degree(QR_1D_Network, mode = "all")
+
+#Getting edge list from QR_1D_Network and creating a edge list 
+QR_1D_Edge <- get.edgelist(QR_1D_Network)
+
+#Creating graph from edge list
+QR_1D_Edge_graph <- graph_from_edgelist(QR_1D_Edge, directed = FALSE)
+
+#Plotting Edge graph for 1D responses
+plot(QR_1D_Edge_graph)
