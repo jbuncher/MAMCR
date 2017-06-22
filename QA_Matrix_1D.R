@@ -51,14 +51,14 @@ for (i in 1:QuestionLength)
         else QA_Matrix_1D[j,(i-1)*8+k] <- 0 }}}
 
 library(igraph)
-QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D)
+QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D, weighted = T)
 QA_1D_Network.bp <- bipartite.projection(QA_1D_Network)
 
 #Following line of code no longer needed as long as the original matrix has both row 
     # and column names
 #V(QA_1D_Network.bp$proj2)$label <- ColumnNames
 
-E(QA_1D_Network.bp$proj2)$width <- E(QA_1D_Network.bp$proj2)$weight
+#E(QA_1D_Network.bp$proj2)$width <- E(QA_1D_Network.bp$proj2)$weight
 plot(QA_1D_Network.bp$proj2)
 
 #QR: Question Responses
