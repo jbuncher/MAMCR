@@ -1,6 +1,6 @@
 #Automating Column Names
 library(readxl)
-X1D_Data_QA_Only_2_ <- read.csv("~/Desktop/REU_2017/1D_Data_QA_Only(2).csv",row.names = 1)
+X1D_Data_QA_Only_2_ <- read.csv("1D_Data_QA_Only(1).csv",row.names = 1)
 
 #Number of Questions
 NumberOfQuestions <- 6
