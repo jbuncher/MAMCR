@@ -24,7 +24,7 @@ Ques <- rep("Q", times =length(vect2))
 ColumnNames <- paste(Ques, vect2, vect5, let1, sep ="")
 
 #Creating a QA_Matrix the same size as TestResponse Matrix
-QA_Matrix_1D <- matrix(data = NA,nrow=nrow(X1D_Data_QA_Only_1_),ncol = (length(ColumnNames)),
+QA_Matrix_1D <- matrix(data = NA,nrow=nrow(X1D_Data_QA_Only_1_),ncol = length(ColumnNames),
                      byrow = FALSE, dimnames = as.list(c(ColumnNames,ColumnNames)))
 
 #Convert Matrix to a data frame so we can manipulate the names of the columns
