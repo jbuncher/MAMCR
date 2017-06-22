@@ -73,4 +73,4 @@ QR_1D_Edge <- get.edgelist(QR_1D_Network)
 QR_1D_Edge_graph <- graph_from_edgelist(QR_1D_Edge, directed = FALSE)
 
 #Plotting Edge graph for 1D responses
-plot(QR_1D_Edge_graph)
+plot(QR_1D_Edge_graph, edge.width = E(QR_1D_Network)$weight)
