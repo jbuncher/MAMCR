@@ -110,13 +110,17 @@ E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]
 
 
 QR_1D_Weights <- c()
-QR_1D_Weights_Indices <- list()
+QR_1D_Weights_Indices <- vector("list", length(V(QR_1D_Edge_graph)))
+QR_1D_Edge_Edit <-vector("list", length(V(QR_1D_Edge_graph)))
 
 for (i in 1:length(V(QR_1D_Edge_graph))) 
 {QR_1D_Weights[i] <- quantile(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])]]$weight, 0.95)
-QR_1D_Weights_Indices[i] <- which(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])]]$weight > QR_1D_Weights[i], arr.ind = TRUE)}
+ QR_1D_Weights_Indices[[i]] <- which(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])]]$weight >= QR_1D_Weights[i], arr.ind = TRUE)
+ edges_max_length <- which.max(QR_1D_Weights_Indices[[i]])
+ j <- 1:edges_max_length
+ QR_1D_Edge_Edit[[i]] <- (E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])])[QR_1D_Weights_Indices[[i]]]}
 
-#for (i in 1:length(V(QR_1D_Edge_graph))) V(QR_1D_Edge_graph)[i]
+
 
 #quantile will return the number within vector (x) that is less than %
 #quantile(x, %) produces #
@@ -126,7 +130,22 @@ QR_1D_Weights_Indices[i] <- which(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR
 
 #quantile(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]]$weight, 0.95)
 
+test1 <- unlist(QR_1D_Edge_Edit)
+test2 <-unique(test1)
+test2 <- sort(test2, decreasing = FALSE)
+
+#graph_from_adj_list(adjlist, mode = c("out", "in", "all", "total"),
+ #                   duplicate = TRUE)
+#test3 <- data.frame()
+#test3 <- QR_1D_Edge_graph[test2]
+
+#remove edges from QR_1D_Edge that align from indices
+backbone <- QR_1D_Edge_graph
+backbone2 <- backbone - E(QR_1D_Edge_graph)[!1:length(E(QR_1D_Edge_graph)) %in% test2]
 
 
-
+backbone <- QA_1D_Network.bp$proj2
+backbone <- backbone - V(QA_1D_Network.bp$proj2)[degree(QA_1D_Network.bp$proj2)==0]
+backbone <- backbone - E(backbone)[!1:length(E(backbone)) %in% test2]
+plot(backbone)
 
