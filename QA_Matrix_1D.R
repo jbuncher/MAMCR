@@ -1,6 +1,6 @@
 #Automating Column Names
 library(readxl)
-X1D_Data_QA_Only_2_ <- read.csv("1D_Data_QA_Only(1).csv", row.names = 1)
+X1D_Data_QA_Only_2_ <- read.csv("~/Desktop/REU_2017/1D_Data_QA_Only(2).csv",row.names = 1)
 
 #Number of Questions
 NumberOfQuestions <- 6
@@ -22,6 +22,9 @@ vect2 <- sort(vect2, decreasing = FALSE)
 Ques <- rep("Q", times =length(vect2))
 #Putting it all together to create the Column names
 ColumnNames <- paste(Ques, vect2, vect5, let1, sep ="")
+
+#Removing excess infomation 
+rm(Ques, vect1,vect2,vect3,vect4,vect5)
 
 #Where the data is coming from (easier for following code to be copied and adapted)
 Data <- X1D_Data_QA_Only_2_
@@ -50,15 +53,17 @@ for (i in 1:QuestionLength)
   {for (l in 1) if (Data[j,i]==let1[k]) QA_Matrix_1D[j,(i-1)*8+k] <- 1 
         else QA_Matrix_1D[j,(i-1)*8+k] <- 0 }}}
 
+rm(i,j,k,l)
+
 library(igraph)
-QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D, weighted = T)
+QA_1D_Network <- graph_from_incidence_matrix(QA_Matrix_1D, weighted = TRUE)
 QA_1D_Network.bp <- bipartite.projection(QA_1D_Network)
 
 #Following line of code no longer needed as long as the original matrix has both row 
     # and column names
 #V(QA_1D_Network.bp$proj2)$label <- ColumnNames
 
-#E(QA_1D_Network.bp$proj2)$width <- E(QA_1D_Network.bp$proj2)$weight
+E(QA_1D_Network.bp$proj2)$width <- E(QA_1D_Network.bp$proj2)$weight
 plot(QA_1D_Network.bp$proj2)
 
 #QR: Question Responses
@@ -69,8 +74,59 @@ degree(QR_1D_Network, mode = "all")
 #Getting edge list from QR_1D_Network and creating a edge list 
 QR_1D_Edge <- get.edgelist(QR_1D_Network)
 
+
 #Creating graph from edge list
 QR_1D_Edge_graph <- graph_from_edgelist(QR_1D_Edge, directed = FALSE)
 
 #Plotting Edge graph for 1D responses
 plot(QR_1D_Edge_graph, edge.width = E(QR_1D_Network)$weight)
+
+#running infomap with the 1D responses network
+###QR_1D_group <- cluster_infomap(QR_1D_Edge_graph, e.weights = NULL, v.weights = NULL, 
+ ###                              nb.trials = 10000, modularity = TRUE)
+
+#This creates a network where all the weights less than five are deleted
+#QR_1D_Edge_lessthan5 <- delete_edges(QA_1D_Network.bp$proj2, E(QA_1D_Network.bp$proj2)[weight<5]) 
+#QR_1D_Edge5 <-get.edgelist(QR_1D_Edge_lessthan5)
+#QR_1D_Edge5_graph <- graph_from_edgelist(QR_1D_Edge5, directed = FALSE)
+#plot(QR_1D_Edge5_graph)
+#rm(QR_1D_Edge_lessthan5,QR_1D_Edge5,QR_1D_Edge5_graph)
+
+
+#This returns weights for node [1] in the edge_graph list
+E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]]$weight
+
+#This returns all the edges connected to node [1]
+E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]
+
+#This gives me the weights and sorting them and grabbing specific data if using weighted_1_1D$ix
+#weight_1_1D<-E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]]$weight
+#weight_1_1D <- sort(weight_1_1D, decreasing=TRUE, index.return = TRUE)
+#weight_1_1D
+
+#This returns indices for top two weights. Will use in order to obtain specific nodes
+#weight_1_1D$ix[1];weight_1_1D$ix[2]
+
+
+
+QR_1D_Weights <- c()
+QR_1D_Weights_Indices <- list()
+
+for (i in 1:length(V(QR_1D_Edge_graph))) 
+{QR_1D_Weights[i] <- quantile(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])]]$weight, 0.95)
+QR_1D_Weights_Indices[i] <- which(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[i])]]$weight > QR_1D_Weights[i], arr.ind = TRUE)}
+
+#for (i in 1:length(V(QR_1D_Edge_graph))) V(QR_1D_Edge_graph)[i]
+
+#quantile will return the number within vector (x) that is less than %
+#quantile(x, %) produces #
+
+#which will tell you the indices of numbers in vector (x) that are greater than #
+#which(x > # )
+
+#quantile(E(QR_1D_Network)[E(QR_1D_Edge_graph)[from(V(QR_1D_Edge_graph)[1])]]$weight, 0.95)
+
+
+
+
+
