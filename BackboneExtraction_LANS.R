@@ -10,6 +10,15 @@ testNetwork <- graph_from_incidence_matrix(TestBipartiteMatrix, weighted = T)
 # create the two bipartite projections from the network
 testNetwork.bp <- bipartite.projection(testNetwork)
 
+# Store the response network as something shorter
+RN <- testNetwork.bp$proj2
+
+# Make the widths of the edges equal to the weights (for plotting)
+E(RN)$width <- E(RN)$weight
+
+# Remove all nodes not connected to the rest of the network, store as a new graph
+RN_C <- RN - V(RN)[degree == 0]
+
 # plots the network of answer selections where the edge width is given by the edge weight
 plot(testNetwork.bp$proj2, edge.width =E(testNetwork.bp$proj2)$weight)
 
