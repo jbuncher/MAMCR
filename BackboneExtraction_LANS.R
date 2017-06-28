@@ -19,6 +19,12 @@ E(RN)$width <- E(RN)$weight
 # Remove all nodes not connected to the rest of the network, store as a new graph
 RN_C <- RN - V(RN)[degree == 0]
 
+# Get the number of vertices and edges so we don't have to keep computing them
+NofVs <- length(V(RN_C))
+NofEs <- length(E(RN_C))
+
+listOfEdges <- E(RN_C)
+
 # plots the network of answer selections where the edge width is given by the edge weight
 plot(testNetwork.bp$proj2, edge.width =E(testNetwork.bp$proj2)$weight)
 
