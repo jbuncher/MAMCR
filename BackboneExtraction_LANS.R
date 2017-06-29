@@ -17,7 +17,7 @@ RN <- testNetwork.bp$proj2
 E(RN)$width <- E(RN)$weight
 
 # Remove all nodes not connected to the rest of the network, store as a new graph
-RN_C <- RN - V(RN)[degree == 0]
+RN_C <- RN - V(RN)[degree(RN) == 0]
 
 # Get the number of vertices and edges so we don't have to keep computing them
 NofVs <- length(V(RN_C))
