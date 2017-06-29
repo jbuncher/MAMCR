@@ -27,15 +27,28 @@ RN_C_BB <- set_edge_attr(graph = RN_C,name = "backbone",value = "0")
 NofVs <- length(V(RN_C_BB))
 NofEs <- length(E(RN_C_BB))
 
+# makes a list of nodes and edges for convenience
 listOfNodes <- V(RN_C_BB)
 listOfEdges <- E(RN_C_BB)
 
+# for each node in the network....
 for (i in listOfNodes){
+  
+  # grab the edges connected to that node and....
   edgesForNode <- listOfEdges[from(listOfNodes[i])]
+  
+  # find the value that 95% of the weights are >= and....
   cutoff <- quantile(edgesForNode$weight,0.95)
+  
+  # mark those edges and ....
   edgesToKeep <- edgesForNode[edgesForNode$weight >= cutoff]
+  
+  # indicate that they are part of the backbone
   E(RN_C_BB)[edgesToKeep]$backbone <- 1
 }
+
+# remove all edges not part of the backbone
 final_backbone <- RN_C_BB - E(RN_C_BB)[backbone = 0]
 
+# plot the backbone!
 plot(final_backbone)
