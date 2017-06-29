@@ -24,6 +24,13 @@ NofVs <- length(V(RN_C))
 NofEs <- length(E(RN_C))
 
 listOfEdges <- E(RN_C)
+listOfNodes <- V(RN_C)
+
+for (i in listOfNodes){
+  edgesForNode <- listOfEdges[from(listOfNodes[i])]
+  cutoff <- quantile(edgesForNode$weight,0.95)
+  edgesToKeep <- edgesForNode$weight >= cutoff
+}
 
 # plots the network of answer selections where the edge width is given by the edge weight
 plot(testNetwork.bp$proj2, edge.width =E(testNetwork.bp$proj2)$weight)
