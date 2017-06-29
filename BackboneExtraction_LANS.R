@@ -24,16 +24,17 @@ RN_C <- RN - V(RN)[degree(RN) == 0]
 RN_C_BB <- set_edge_attr(graph = RN_C,name = "backbone",value = "0")
 
 # Get the number of vertices and edges so we don't have to keep computing them
-NofVs <- length(V(RN_C))
-NofEs <- length(E(RN_C))
+NofVs <- length(V(RN_C_BB))
+NofEs <- length(E(RN_C_BB))
 
-listOfNodes <- V(RN_C)
-listOfEdges <- E(RN_C)
+listOfNodes <- V(RN_C_BB)
+listOfEdges <- E(RN_C_BB)
 
 for (i in listOfNodes){
   edgesForNode <- listOfEdges[from(listOfNodes[i])]
   cutoff <- quantile(edgesForNode$weight,0.95)
-  edgesToKeep <- edgesForNode$weight >= cutoff
+  edgesToKeep <- edgesForNode[edgesForNode$weight >= cutoff]
+  E(RN_C_BB)[edgesToKeep]$backbone <- 1
 }
 
 # plots the network of answer selections where the edge width is given by the edge weight
