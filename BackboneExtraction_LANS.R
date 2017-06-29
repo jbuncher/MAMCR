@@ -36,6 +36,9 @@ for (i in listOfNodes){
   edgesToKeep <- edgesForNode[edgesForNode$weight >= cutoff]
   E(RN_C_BB)[edgesToKeep]$backbone <- 1
 }
+final_backbone <- RN_C_BB - E(RN_C_BB)[backbone = 0]
+
+plot(final_backbone)
 
 # plots the network of answer selections where the edge width is given by the edge weight
 plot(testNetwork.bp$proj2, edge.width =E(testNetwork.bp$proj2)$weight)
