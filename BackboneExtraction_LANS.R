@@ -13,7 +13,7 @@ testNetwork.bp <- bipartite.projection(testNetwork)
 # Store the response network as something shorter
 RN <- testNetwork.bp$proj2
 
-LANS <- function(RN) {
+LANS <- function(RN, alpha) {
   # Make the widths of the edges equal to the weights (for plotting)
   E(RN)$width <- E(RN)$weight
   
@@ -39,7 +39,7 @@ LANS <- function(RN) {
     edgesForNode <- listOfEdges[from(listOfNodes[i])]
     
     # find the value that 95% of the weights are >= and....
-    cutoff <- quantile(edgesForNode$weight,0.95)
+    cutoff <- quantile(edgesForNode$weight,alpha)
     
     # mark those edges and ....
     edgesToKeep <- edgesForNode[edgesForNode$weight >= cutoff]
