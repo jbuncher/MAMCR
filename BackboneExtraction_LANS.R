@@ -19,12 +19,16 @@ E(RN)$width <- E(RN)$weight
 # Remove all nodes not connected to the rest of the network, store as a new graph
 RN_C <- RN - V(RN)[degree(RN) == 0]
 
+# Add a "backbone" attribute to the edges in the network, with 1 indicating
+# that the edge is part of the backbone, and 0 otherwise.  Intialize to 0
+RN_C_BB <- set_edge_attr(graph = RN_C,name = "backbone",value = "0")
+
 # Get the number of vertices and edges so we don't have to keep computing them
 NofVs <- length(V(RN_C))
 NofEs <- length(E(RN_C))
 
-listOfEdges <- E(RN_C)
 listOfNodes <- V(RN_C)
+listOfEdges <- E(RN_C)
 
 for (i in listOfNodes){
   edgesForNode <- listOfEdges[from(listOfNodes[i])]
