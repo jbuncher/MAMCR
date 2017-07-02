@@ -1,7 +1,7 @@
 # Script to clean the "test" data file, converting choices (A, B, C, D) to "1/0" (True/False)
 
 # Import the File of Responses
-TestResponse <- read.csv("/media/jbuncher/Research/PER/REU/2017/R/MAMCR/TestResponse.csv",row.names=1)
+TestResponse <- read.csv("/media/jbuncher/Research/PER/REU/2017/R/MAMCR/TestResponse.csv",row.names = 1)
 
 # Extract the number of questions and students from original data file
 NofQs = ncol(TestResponse)
@@ -29,8 +29,8 @@ TestMatrix <- setNames(TestMatrix, ColumnNames)
 # student chose "choice", and a 0 if they did not.  Every element of the "NA" matrix
 # should either be 1 or 0 after this
 
-for (q in 1:NofQs){
-  for (choice in choices){ 
+for (q in 1:NofQs) {
+  for (choice in choices) { 
     # Select the column we need
     selcol <- paste0(q,choice)
     # Put a "1" in the cell for choices that match, 0 for those that don't
@@ -40,5 +40,4 @@ for (q in 1:NofQs){
 }
 
 # Write out the converted data, so we don't have to do it again!
-write.csv(TestMatrix,file="TestMatrixOutput.csv")
-
+write.csv(TestMatrix,file = "TestMatrixOutput.csv")
